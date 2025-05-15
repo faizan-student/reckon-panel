@@ -1,0 +1,32 @@
+<h2>Update Your Profile</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    Department: <input type="text" name="department" value="{{ user.department }}"><br>
+    Designation: <input type="text" name="designation" value="{{ user.designation }}"><br>
+
+    Employment Type:
+    <select name="employment_type">
+        <option value="">Select</option>
+        <option value="full_time" {% if user.employment_type == "full_time" %}selected{% endif %}>Full Time</option>
+        <option value="part_time" {% if user.employment_type == "part_time" %}selected{% endif %}>Part Time</option>
+        <option value="intern" {% if user.employment_type == "intern" %}selected{% endif %}>Intern</option>
+    </select><br>
+
+    Access Level: <input type="text" name="access_level" value="{{ user.access_level }}"><br>
+
+    Supervisor ID:
+    <input type="number" name="supervisor"
+        value="{% if user.supervisor %}{{ user.supervisor.id }}{% endif %}"><br>
+
+    Date of Joining:
+    <input type="date" name="date_of_joining"
+        value="{% if user.date_of_joining %}{{ user.date_of_joining|date:'Y-m-d' }}{% endif %}"><br>
+
+    Profile Picture: <input type="file" name="profile_picture"><br>
+    <button type="submit">Update</button>
+</form>
+
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>

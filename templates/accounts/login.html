@@ -1,0 +1,309 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Multi-step Sign Up Form</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #f5f5f7;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 16px 0 16px;
+            min-height: 100vh;
+        }
+
+        h2 {
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 768px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            background: linear-gradient(180deg, #000000 0%, #333333 100%);
+            color: white;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                flex-direction: row;
+            }
+        }
+
+        /* Left side: form */
+        .left {
+            background-color: white;
+            color: #374151;
+            padding: 48px 40px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 460px;
+            max-height: 460px;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .left {
+                align-items: flex-start;
+            }
+        }
+
+        .left h3 {
+            font-weight: 800;
+            font-size: 28px;
+            margin: 0 0 24px 0;
+            align-self: flex-start;
+            color: #111827;
+        }
+
+        form {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            height: 100%;
+            justify-content: center;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #374151;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"] {
+            background-color: #f3f4f6;
+            border: none;
+            padding: 12px 14px;
+            font-size: 14px;
+            color: #374151;
+            border-radius: 4px;
+            outline-offset: 2px;
+            outline-color: transparent;
+            transition: outline-color 0.2s ease;
+            width: 100%;
+            resize: vertical;
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 16px;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus,
+        select:focus,
+        textarea:focus {
+            outline-color: #fb6e3b;
+            background-color: white;
+        }
+
+        textarea {
+            min-height: 80px;
+            margin-bottom: 16px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-start;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        button {
+            background: linear-gradient(180deg, #000000 0%, #333333 100%);
+            border: none;
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 10px 0;
+            border-radius: 9999px;
+            cursor: pointer;
+            width: 112px;
+            transition: background-color 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #e65a1a;
+        }
+
+        button:disabled {
+            background-color: #fbbf9c;
+            cursor: not-allowed;
+        }
+
+        button.back {
+            background-color: transparent;
+            color: #fb6e3b;
+            border: 1.5px solid #fb6e3b;
+            width: 112px;
+        }
+
+        button.back:hover:not(:disabled) {
+            background-color: #fb6e3b;
+            color: white;
+        }
+
+        /* Right side: greeting */
+        .right {
+            flex: 1;
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+
+        .right img.logo {
+            width: 160px;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 24px;
+        }
+
+        .right h3 {
+            font-weight: 800;
+            font-size: 28px;
+            margin: 0 0 16px 0;
+        }
+
+        .right p {
+            font-size: 14px;
+            margin: 0;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+
+        /* Loading spinner container */
+        .loading-container {
+            position: absolute;
+            inset: 48px 40px 48px 40px;
+            background-color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border-radius: 0 0 12px 12px;
+            z-index: 10;
+        }
+
+        /* Spinner */
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #fb6e3b;
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Success container */
+        .success-container {
+            position: absolute;
+            inset: 48px 40px 48px 40px;
+            background-color: rgba(255 255 255 / 0.15);
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            animation: fadeUp 0.6s ease forwards;
+            z-index: 20;
+            left: calc(50% - 60px);
+            top: calc(50% - 60px);
+            box-shadow: 0 0 15px rgba(0, 128, 0, 0.5);
+        }
+
+        @keyframes fadeUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Green tick icon */
+        .success-container svg {
+            width: 64px;
+            height: 64px;
+            stroke: #22c55e;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Assign Pad</h2>
+    <div class="container" role="main" aria-label="Sign up multi-step form">
+        <section class="left" aria-label="Sign up form">
+            <h3>Login</h3>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Email" required><br>
+                <input type="password" name="password" placeholder="Password" required><br>
+                <button type="submit">Login</button>
+            </form>
+            <div class="loading-container" id="loading" aria-live="polite" aria-label="Loading">
+                <div class="spinner" role="status" aria-hidden="true"></div>
+            </div>
+            <div class="success-container" id="success" role="alert" aria-live="assertive" aria-label="Success">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+        </section>
+        <section class="right" aria-label="Sign up invitation">
+            <img alt="Company logo" class="logo" src="https://placehold.co/320x80?text=Your+Logo+Here" />
+            <h3>A Project of Reckon Infotech</h3>
+            <p>Enter your personal details and start journey with us</p>
+        </section>
+    </div>
+
+
+</body>
+
+</html>
