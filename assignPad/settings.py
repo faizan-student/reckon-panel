@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = True
-ALLOWED_HOSTS = ['assignpad.onrender.com', 'reckon-panel-1.onrender.com']
+ALLOWED_HOSTS = ['assignpad.onrender.com', 'reckon-panel-1.onrender.com', "*"]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://assignpad.onrender.com',
