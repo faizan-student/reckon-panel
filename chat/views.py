@@ -52,4 +52,4 @@ def chatPage(request, username):
 
 
 def root_redirect(request):
-    return redirect('/illusion@gmail.com')
+    return redirect('/accounts/register')
