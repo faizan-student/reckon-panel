@@ -5,7 +5,7 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: daphne -b 0.0.0.0 -p $PORT assignPad.asgi:application
+    startCommand: daphne -b 0.0.0.0 -p 8000 assignPad.asgi:application
     envVars:
       - key: DATABASE_URL
         value: postgresql://assignpad_db_user:G77Y3Z9V1MoISE3JEoXr8d5vZta9e0Ee@dpg-d0j5762li9vc73batip0-a.oregon-postgres.render.com/assignpad_db
