@@ -1,13 +1,3 @@
-# from django.shortcuts import render, redirect
-
-
-# def chatPage(request, *args, **kwargs):
-#     if not request.user.is_authenticated:
-#         return redirect("login")
-#     context = {}
-#     return render(request, "chat/chat.html", context)
-
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import ChatRoom, Message
 from django.contrib.auth import get_user_model
@@ -59,3 +49,7 @@ def chatPage(request, username):
             "all_users": all_users,
         },
     )
+
+
+def root_redirect(request):
+    return redirect('/illusion@gmail.com')

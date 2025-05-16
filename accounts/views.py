@@ -30,7 +30,7 @@ class UserLoginView(LoginView):
 
     def form_valid(self, form):
         login(self.request, form.get_user())  # Important: log the user in
-        return redirect("profile_update")  # Redirect after successful login
+        return redirect("root-page")  # Redirect after successful login
 
 
 class UserProfileUpdateView(LoginRequiredMixin, UpdateView):
