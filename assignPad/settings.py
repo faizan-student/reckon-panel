@@ -35,6 +35,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "assignPad.urls"
@@ -57,7 +58,17 @@ TEMPLATES = [
 
 ASGI_APPLICATION = "assignPad.asgi.application"
 
-CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}}
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [
+                "redis://default:Fgkmoiw4OTMDtSuxOCakvtGVqC8uLEiL@redis-18311.c301.ap-south-1-1.ec2.redns.redis-cloud.com:18311"
+            ],
+        },
+    },
+}
+
 
 WSGI_APPLICATION = "assignPad.wsgi.application"
 

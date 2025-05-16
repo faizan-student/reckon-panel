@@ -4,15 +4,16 @@ autobahn==24.4.2
 Automat==25.4.16
 cffi==1.17.1
 channels==4.2.2
+channels_redis==4.2.1
 constantly==23.10.4
 cryptography==44.0.3
 daphne==4.1.2
 dj-database-url==2.3.0
 Django==5.2.1
-gunicorn
 hyperlink==21.0.0
 idna==3.10
 incremental==24.7.2
+msgpack==1.1.0
 pillow==11.2.1
 psycopg2-binary==2.9.10
 pyasn1==0.6.1
@@ -21,6 +22,7 @@ pycparser==2.22
 pyOpenSSL==25.0.0
 python-dotenv==1.1.0
 pytz==2025.2
+redis==6.1.0
 service-identity==24.2.0
 setuptools==80.7.1
 sqlparse==0.5.3

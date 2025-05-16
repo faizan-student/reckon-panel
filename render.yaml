@@ -2,8 +2,19 @@ services:
   - type: web
     name: assignpad
     env: python
-    buildCommand: ""
-    startCommand: daphne assignPad.asgi:application
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: daphne assignPad.asgi:application --port $PORT --bind 0.0.0.0
     envVars:
       - key: DATABASE_URL
         value: postgresql://assignpad_db_user:G77Y3Z9V1MoISE3JEoXr8d5vZta9e0Ee@dpg-d0j5762li9vc73batip0-a.oregon-postgres.render.com/assignpad_db
+
+      - key: SECRET_KEY
+        value: django-insecure-ex%1!y&$1!=p2i=e#bo)nd_f46=d@e#m(kit3h5te)ax_bx(0k
+
+      - key: DEBUG
+        value: False
+
+      - key: REDIS_URL
+        value: redis://default:Fgkmoiw4OTMDtSuxOCakvtGVqC8uLEiL@redis-18311.c301.ap-south-1-1.ec2.redns.redis-cloud.com:18311
