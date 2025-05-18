@@ -659,6 +659,17 @@
         display: inline-block;
       }
     }
+
+
+    .tick {
+      font-size: 12px;
+      margin-left: 5px;
+    }
+
+    .tick.read {
+      color: #34B7F1;
+      /* WhatsApp blue tick */
+    }
   </style>
 </head>
 
@@ -718,23 +729,57 @@
       "/ws/chat/" + roomName + "/"
     );
 
+    function getMessageStatusHTML(status) {
+      if (status === "sent") return '<span class="tick">✓</span>';
+      if (status === "delivered") return '<span class="tick">✓✓</span>';
+      if (status === "read") return '<span class="tick tick read">✓✓</span>';
+      return "";
+    }
+
     chatSocket.onmessage = function (e) {
       const data = JSON.parse(e.data);
       const msgDiv = document.createElement("div");
-      msgDiv.classList.add("message");
-      msgDiv.classList.add(data.sender === senderUsername ? "sent" : "received");
+      const isOwnMessage = data.sender === senderUsername;
+      const status = isOwnMessage ? "sent" : "delivered";
+
+      const msgId = Date.now().toString();
+      localStorage.setItem(msgId, status);
+
+      msgDiv.classList.add("message", isOwnMessage ? "sent" : "received");
+      msgDiv.setAttribute("data-msg-id", msgId);
+
+      const ticksHTML = isOwnMessage ? getMessageStatusHTML(status) : "";
 
       msgDiv.innerHTML = `
-        ${data.message}
-        <div style="font-size: 11px; color: #555; margin-top: 4px; text-align: right;">
-          ${data.timestamp}
-        </div>
-      `;
+    ${data.message}
+    <div class="tick-container" style="font-size: 11px; color: #555; margin-top: 4px; text-align: right;">
+      ${data.timestamp} ${ticksHTML}
+    </div>
+  `;
 
       const chatBox = document.getElementById("chat-box");
       chatBox.appendChild(msgDiv);
       chatBox.scrollTop = chatBox.scrollHeight;
     };
+
+    // ✅ Blue tick update on focus
+    window.addEventListener("focus", () => {
+      const messages = document.querySelectorAll(".message.sent");
+      messages.forEach((msgDiv) => {
+        const msgId = msgDiv.getAttribute("data-msg-id");
+        const currentStatus = localStorage.getItem(msgId);
+
+        if (currentStatus !== "read") {
+          localStorage.setItem(msgId, "read");
+
+          const tickContainer = msgDiv.querySelector(".tick-container");
+          if (tickContainer) {
+            tickContainer.innerHTML = tickContainer.innerHTML.replace(/✓✓?|<span.*?<\/span>/g, '<span class="tick tick read">✓✓</span>');
+          }
+        }
+      });
+    });
+
 
     document.getElementById("send-button").onclick = function () {
       const messageInput = document.getElementById("message-input");
