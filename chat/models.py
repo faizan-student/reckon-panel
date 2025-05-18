@@ -22,7 +22,10 @@ class Message(models.Model):
     content = models.TextField(blank=True)
     attachment = models.ImageField(upload_to="chat_attachments/", null=True, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
+    is_sent = models.BooleanField(default=False)
+    is_delivered = models.BooleanField(default=False)
     is_read = models.BooleanField(default=False)
+
 
     def __str__(self):
         return f"From {self.sender} in {self.chat}"
